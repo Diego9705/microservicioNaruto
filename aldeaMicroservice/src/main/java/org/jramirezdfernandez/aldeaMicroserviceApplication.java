@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MonolitoNarutoApplication {
+public class aldeaMicroserviceApplication {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(MonolitoNarutoApplication.class, args);
+        SpringApplication.run(aldeaMicroserviceApplication.class, args);
 
 
     }
