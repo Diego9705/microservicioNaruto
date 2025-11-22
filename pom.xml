@@ -11,6 +11,7 @@
     <groupId>org.jramirez-dfernandez</groupId>
     <artifactId>monolitoNaruto</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>monolitoNaruto</name>
     <description>monolitoNaruto</description>
     <url/>
@@ -20,6 +21,12 @@
     <developers>
         <developer/>
     </developers>
+    <modules>
+        <module>jutsuMicroservice</module>
+        <module>aldeaMicroservice</module>
+        <module>ninjaMicroservice</module>
+        <module>misionMicroservice</module>
+    </modules>
     <scm>
         <connection/>
         <developerConnection/>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import * as misionesApi from '../api/misiones';
-import * as ninjasApi from '../api/ninjas';
+import * as misionesApi from '../bff/misiones';
+import * as ninjasApi from '../bff/ninjas';
 import MisionForm from '../components/MisionForm';
 
 function MisionesPage() {
@@ -82,10 +82,12 @@ function MisionesPage() {
         const misionId = parseInt(selectedMisionId);
         const ninjaId = parseInt(selectedNinjaId);
 
+        /*
         if (isNaN(misionId) || isNaN(ninjaId)) {
             setError('IDs de misión o ninja no válidos.');
             return;
         }
+        */
 
         try {
             await misionesApi.connectNinjaToMision(misionId, ninjaId);

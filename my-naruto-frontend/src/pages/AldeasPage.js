@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import * as aldeasApi from '../api/aldeas';
+import * as aldeasApi from '../bff/aldeas';
 import AldeaForm from '../components/AldeaForm';
 
 function AldeasPage() {

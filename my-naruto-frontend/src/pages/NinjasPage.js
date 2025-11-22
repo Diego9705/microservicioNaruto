@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import * as ninjasApi from '../api/ninjas';
-import * as jutsusApi from '../api/jutsus';
-import * as aldeasApi from '../api/aldeas';
+import * as ninjasApi from '../bff/ninjas';
+import * as jutsusApi from '../bff/jutsus';
+import * as aldeasApi from '../bff/aldeas';
 import NinjaForm from '../components/NinjaForm';
 
 function NinjasPage() {

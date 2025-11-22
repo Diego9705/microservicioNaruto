@@ -6,23 +6,31 @@ function NinjaForm({ onSubmit, initialData = {}, buttonText = 'Crear Ninja', ald
     const [atk, setAtk] = useState(initialData.atk || 0);
     const [def, setDef] = useState(initialData.def || 0);
     const [chakra, setChakra] = useState(initialData.chakra || 0);
-    const [selectedAldeaId, setSelectedAldeaId] = useState('');
+    const [aldeaName, setAldeaName] = useState(initialData.aldea ||'');
     const [prevId, setPrevId] = useState(initialData.id);
+    const [aldea, setAldea] = useState(aldeas.find(aldea => aldea.name === aldeaName)|| null);
 
     useEffect(() => {
+        const initialAldeaName = initialData.aldea || '';
+        const foundAldea = aldeas.find(aldea => aldea.name === initialAldeaName);
+
         if (initialData && initialData.id && initialData.id !== prevId) {
             setName(initialData.name || '');
             setRank(initialData.rank || 'Genin');
             setAtk(initialData.atk || 0);
             setDef(initialData.def || 0);
             setChakra(initialData.chakra || 0);
-            setSelectedAldeaId(initialData.aldea ? initialData.aldea.id.toString() : '');
             setPrevId(initialData.id);
+            setAldea(foundAldea);
         }
-    }, [initialData, prevId]);
+
+
+    }, [initialData, prevId, aldeas]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        console.log(aldea)
         onSubmit(
             {
                 id: initialData.id,
@@ -30,9 +38,10 @@ function NinjaForm({ onSubmit, initialData = {}, buttonText = 'Crear Ninja', ald
                 rank,
                 atk: parseInt(atk),
                 def: parseInt(def),
-                chakra: parseInt(chakra)
-            },
-            selectedAldeaId
+                chakra: parseInt(chakra),
+                aldea : aldea
+            }
+
         );
         if (!initialData.id) {
             setName('');
@@ -40,7 +49,7 @@ function NinjaForm({ onSubmit, initialData = {}, buttonText = 'Crear Ninja', ald
             setAtk(0);
             setDef(0);
             setChakra(0);
-            setSelectedAldeaId('');
+            setAldea(null);
             setPrevId(null);
         }
     };
@@ -87,14 +96,24 @@ function NinjaForm({ onSubmit, initialData = {}, buttonText = 'Crear Ninja', ald
             <label>
                 Asignar Aldea:
                 <select
-                    value={selectedAldeaId}
-                    onChange={(e) => setSelectedAldeaId(e.target.value)}
-                >
+
+                    value = {aldeaName}
+
+                    onChange={(e) => {
+                        const newAldeaName = e.target.value;
+                        setAldeaName(newAldeaName);
+                        const selectedAldea = aldeas.find(aldea => aldea.name === newAldeaName);
+
+
+                        setAldea(selectedAldea);
+
+                        }
+                    }>
                     <option value="">(Ninguna)</option>
                     {aldeas.map((aldea) => (
-                        <option key={aldea.id} value={aldea.id}>
+                        <option key={aldea.id} value={aldea.name}>
                             {aldea.name} (ID: {aldea.id})
-                        </option>
+                    </option>
                     ))}
                 </select>
             </label>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import * as jutsusApi from '../api/jutsus';
+import * as jutsusApi from '../bff/jutsus';
 import JutsuForm from '../components/JutsuForm';
 
 function JutsusPage() {

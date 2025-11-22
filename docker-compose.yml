@@ -1,6 +1,9 @@
 services:
-  app:
-    build: .
+
+  aldea:
+    build:
+      context: .
+      dockerfile: ./aldeaMicroservice/Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -10,7 +13,44 @@ services:
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=postgres
 
+  jutsu:
+    build:
+      context: .
+      dockerfile: ./jutsuMicroservice/Dockerfile
+    ports:
+      - "8070:8070"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=jdbc:postgresql://db:5432/monolitoNinja_postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
 
+  ninja:
+    build:
+      context: .
+      dockerfile: ./ninjaMicroservice/Dockerfile
+    ports:
+      - "8060:8060"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=jdbc:postgresql://db:5432/monolitoNinja_postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+
+  mision:
+    build:
+      context: .
+      dockerfile: ./misionMicroservice/Dockerfile
+    ports:
+      - "8050:8050"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=jdbc:postgresql://db:5432/monolitoNinja_postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
   db:
     image: postgres:12
     ports:

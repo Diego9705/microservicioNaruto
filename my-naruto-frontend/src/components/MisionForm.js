@@ -1,23 +1,56 @@
 import React, { useState, useEffect } from 'react';
+import { getNinjaById }from '../bff/ninjas';
 
 function MisionForm({ onSubmit, initialData = {}, buttonText = 'Crear Misión', ninjas = [] }) {
+
+    var resultado = null;
+    const initialNinja = ninjas.find(n => n.name === initialData.ninja) || null;
+    const fetchNinjaData = async (ninjaName) => {
+        const response = await getNinjaById(initialNinja.id);
+        resultado = response.data;
+    }
+    if (initialNinja != null) {
+        fetchNinjaData(initialNinja);
+    }
+
+
     const [name, setName] = useState(initialData.name || '');
     const [rank, setRank] = useState(initialData.rank || 'D');
     const [recompensa, setRecompensa] = useState(initialData.recompensa || 0);
     const [requisitorango, setRequisitoRango] = useState(initialData.requisitorango || 'Genin');
-    const [selectedNinjaId, setSelectedNinjaId] = useState('');
+    const [ninjaName, setNinjaName] = useState(initialData.ninja|| '');
     const [prevId, setPrevId] = useState(initialData.id);
+    const [ninja, setNinja]= useState(resultado);
+
 
     useEffect(() => {
-        if (initialData && initialData.id && initialData.id !== prevId) {
+
+        const fetchNinjaData = async (ninjaName) => {
+
+            const foundNinja = ninjas.find(n => n.name === ninjaName)|| null;
+
+            if (foundNinja == null){
+                setNinja(null)
+
+            } else {
+                const response = await getNinjaById(foundNinja.id);
+                setNinja(response.data);
+            }
+
+
+        }
+
+        if (initialData && initialData.id && initialData.name !== "") {
+
+
+            fetchNinjaData(ninjaName);
             setName(initialData.name || '');
             setRank(initialData.rank || 'D');
             setRecompensa(initialData.recompensa || 0);
             setRequisitoRango(initialData.requisitorango || 'Genin');
-            setSelectedNinjaId(initialData.ninja ? initialData.ninja.id.toString() : '');
             setPrevId(initialData.id);
         }
-    }, [initialData, prevId]);
+    }, [initialData, prevId, ninjas, ninjaName,initialNinja ]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,16 +60,16 @@ function MisionForm({ onSubmit, initialData = {}, buttonText = 'Crear Misión', 
                 name,
                 rank,
                 recompensa: parseInt(recompensa),
-                requisitorango
-            },
-            selectedNinjaId
+                requisitorango,
+                ninja : ninja
+            }
         );
         if (!initialData.id) {
             setName('');
             setRank('D');
             setRecompensa(0);
             setRequisitoRango('Genin');
-            setSelectedNinjaId('');
+            setNinja(null);
             setPrevId(null);
         }
     };
@@ -76,20 +109,34 @@ function MisionForm({ onSubmit, initialData = {}, buttonText = 'Crear Misión', 
                     <option value="Jonin">Jonin</option>
                 </select>
             </label>
+
+
             <label>
                 Asignar Ninja:
                 <select
-                    value={selectedNinjaId}
-                    onChange={(e) => setSelectedNinjaId(e.target.value)}
-                >
+                    value={ninjaName}
+                    onChange={(e) => {
+                        const newNinjaName = e.target.value;
+                        setNinjaName(newNinjaName);
+                        const selectedNinja = getNinjaById(ninjas.find(ninja => ninja.name === newNinjaName).id);
+                        selectedNinja.then(response => {
+                            setNinja(response.data);
+
+                        })
+
+
+                        }
+                    }>
+
                     <option value="">(Ninguno)</option>
                     {ninjas.map((ninja) => (
-                        <option key={ninja.id} value={ninja.id}>
+                        <option key={ninja.id} value={ninja.name}>
                             {ninja.name} (Rango: {ninja.rank})
                         </option>
                     ))}
                 </select>
             </label>
+
             <button type="submit">{buttonText}</button>
         </form>
     );
